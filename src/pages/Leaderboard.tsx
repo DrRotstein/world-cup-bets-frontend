@@ -6,7 +6,7 @@ import type { LeaderboardEntry } from '../types';
 
 export default function Leaderboard() {
   const { groupId } = useParams<{ groupId: string }>();
-  const [expandedUser, setExpandedUser] = useState<string | null>(null);
+  const [expandedUser, setExpandedUser] = useState<number | null>(null);
 
   if (!groupId) return null;
 
@@ -29,8 +29,8 @@ function LeaderboardContent({
   setExpandedUser,
 }: {
   groupId: string;
-  expandedUser: string | null;
-  setExpandedUser: (u: string | null) => void;
+  expandedUser: number | null;
+  setExpandedUser: (u: number | null) => void;
 }) {
   const { data: leaderboard, isLoading, error } = useQuery({
     queryKey: ['leaderboard', groupId],
@@ -79,8 +79,8 @@ function LeaderboardRow({
         <span className={`rank ${entry.rank <= 3 ? `rank-${entry.rank}` : ''}`}>
           {entry.rank}
         </span>
-        {entry.user.picture && <img src={entry.user.picture} alt="" className="avatar avatar-sm" />}
-        <span className="lb-name">{entry.user.name}</span>
+        {entry.user.avatarUrl && <img src={entry.user.avatarUrl} alt="" className="avatar avatar-sm" />}
+        <span className="lb-name">{entry.user.displayName}</span>
         <span className="lb-points">{entry.totalPoints} pts</span>
         <span className="text-secondary">{isExpanded ? '▲' : '▼'}</span>
       </div>
@@ -89,7 +89,7 @@ function LeaderboardRow({
   );
 }
 
-function BreakdownPanel({ groupId, userId }: { groupId: string; userId: string }) {
+function BreakdownPanel({ groupId, userId }: { groupId: string; userId: number }) {
   const { data: breakdown, isLoading } = useQuery({
     queryKey: ['breakdown', groupId, userId],
     queryFn: () => getUserBreakdown(groupId, userId),

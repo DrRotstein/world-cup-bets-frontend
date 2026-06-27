@@ -95,8 +95,8 @@ function GroupContent({
         <div>
           {group.members?.map((m) => (
             <div key={m.id} className="lb-row">
-              {m.user.picture && <img src={m.user.picture} alt="" className="avatar avatar-sm" />}
-              <span className="lb-name">{m.user.name}</span>
+              {m.user.avatarUrl && <img src={m.user.avatarUrl} alt="" className="avatar avatar-sm" />}
+              <span className="lb-name">{m.user.displayName}</span>
             </div>
           ))}
         </div>
@@ -119,7 +119,7 @@ function MatchesTab({ groupId }: { groupId: string }) {
   if (matchesLoading) return <div className="empty-state">Loading matches...</div>;
   if (!matches || matches.length === 0) return <div className="empty-state">No matches scheduled yet.</div>;
 
-  const betMap = new Map<string, Bet>();
+  const betMap = new Map<number, Bet>();
   myBets?.forEach((b) => betMap.set(b.matchId, b));
 
   return (
@@ -249,8 +249,8 @@ function LeaderboardTab({ groupId }: { groupId: string }) {
             <span className={`rank ${entry.rank <= 3 ? `rank-${entry.rank}` : ''}`}>
               {entry.rank}
             </span>
-            {entry.user.picture && <img src={entry.user.picture} alt="" className="avatar avatar-sm" />}
-            <span className="lb-name">{entry.user.name}</span>
+            {entry.user.avatarUrl && <img src={entry.user.avatarUrl} alt="" className="avatar avatar-sm" />}
+            <span className="lb-name">{entry.user.displayName}</span>
             <span className="lb-points">{entry.totalPoints} pts</span>
           </div>
         </Link>

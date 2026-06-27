@@ -61,7 +61,7 @@ export const getMatch = async (id: string): Promise<Match> => {
 // Bets
 export const placeBet = async (
   groupId: string,
-  bet: { matchId: string; homeScorePrediction: number; awayScorePrediction: number }
+  bet: { matchId: number; homeScorePrediction: number; awayScorePrediction: number }
 ): Promise<Bet> => {
   const { data } = await api.post(`/groups/${groupId}/bets`, bet);
   return data;
@@ -85,7 +85,7 @@ export const getLeaderboard = async (groupId: string): Promise<LeaderboardEntry[
 
 export const getUserBreakdown = async (
   groupId: string,
-  userId: string
+  userId: number | string
 ): Promise<MatchBreakdown[]> => {
   const { data } = await api.get(`/groups/${groupId}/leaderboard/${userId}`);
   return data;

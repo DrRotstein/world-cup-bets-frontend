@@ -1,15 +1,31 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { getGroups, createGroup, joinGroup } from '../api/endpoints';
 import { useAuth } from '../context/AuthContext';
 
 export default function Dashboard() {
-  const { user, logout } = useAuth();
+  const { user, logout, pendingInviteCode, clearPendingInvite } = useAuth();
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
   const [newGroupName, setNewGroupName] = useState('');
   const [inviteCode, setInviteCode] = useState('');
   const [showCreate, setShowCreate] = useState(false);
+
+  // Handle pending invite code from shared link (user was not authed when they clicked)
+  useEffect(() => {
+    if (pendingInviteCode) {
+      clearPendingInvite();
+      joinGroup(pendingInviteCode)
+        .then((group) => {
+          queryClient.invalidateQueries({ queryKey: ['groups'] });
+          navigate(`/groups/${group.id}`, { replace: true });
+        })
+        .catch(() => {
+          // Silently fail — they can try again manually
+        });
+    }
+  }, [pendingInviteCode, clearPendingInvite, queryClient, navigate]);
 
   const { data: groups, isLoading, error } = useQuery({
     queryKey: ['groups'],
@@ -52,7 +68,7 @@ export default function Dashboard() {
       <div className="page-header">
         <h1 className="page-title">My Groups</h1>
         <div className="flex items-center gap-1">
-          {user?.picture && <img src={user.picture} alt="" className="avatar-sm avatar" />}
+          {user?.avatarUrl && <img src={user.avatarUrl} alt="" className="avatar-sm avatar" />}
           <button className="btn btn-secondary btn-sm" onClick={logout}>
             Log out
           </button>

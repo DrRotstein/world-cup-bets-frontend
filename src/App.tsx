@@ -6,6 +6,7 @@ import Landing from './pages/Landing';
 import Dashboard from './pages/Dashboard';
 import GroupView from './pages/GroupView';
 import Leaderboard from './pages/Leaderboard';
+import JoinGroup from './pages/JoinGroup';
 import type { ReactNode } from 'react';
 
 const queryClient = new QueryClient({
@@ -43,6 +44,7 @@ function AppRoutes() {
   return (
     <Routes>
       <Route path="/" element={token ? <Navigate to="/dashboard" replace /> : <Landing />} />
+      <Route path="/join/:inviteCode" element={<JoinGroup />} />
       <Route
         path="/dashboard"
         element={

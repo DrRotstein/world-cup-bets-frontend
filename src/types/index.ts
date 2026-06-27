@@ -1,15 +1,15 @@
 export interface User {
-  id: string;
+  id: number;
   email: string;
-  name: string;
-  picture?: string;
+  displayName: string;
+  avatarUrl?: string;
 }
 
 export interface Group {
-  id: string;
+  id: number;
   name: string;
   inviteCode: string;
-  ownerId: string;
+  ownerId: number;
   memberCount: number;
   createdAt: string;
 }
@@ -19,14 +19,14 @@ export interface GroupDetail extends Group {
 }
 
 export interface GroupMember {
-  id: string;
-  userId: string;
+  id: number;
+  userId: number;
   user: User;
   joinedAt: string;
 }
 
 export interface Match {
-  id: string;
+  id: number;
   homeTeam: string;
   awayTeam: string;
   homeScore?: number;
@@ -38,9 +38,9 @@ export interface Match {
 }
 
 export interface Bet {
-  id: string;
-  matchId: string;
-  userId: string;
+  id: number;
+  matchId: number;
+  userId: number;
   homeScorePrediction: number;
   awayScorePrediction: number;
   points?: number;
@@ -50,14 +50,14 @@ export interface Bet {
 
 export interface LeaderboardEntry {
   rank: number;
-  userId: string;
+  userId: number;
   user: User;
   totalPoints: number;
   betCount: number;
 }
 
 export interface MatchBreakdown {
-  matchId: string;
+  matchId: number;
   match: Match;
   bet?: Bet;
   points: number;
