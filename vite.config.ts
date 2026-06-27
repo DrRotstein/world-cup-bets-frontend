@@ -5,5 +5,11 @@ export default defineConfig({
   plugins: [react()],
   server: {
     port: 5173,
+    headers: {
+      // Allow Google OAuth popup to postMessage back to the opener.
+      // Default 'same-origin' (set by @vitejs/plugin-react for Fast Refresh)
+      // blocks cross-origin popup communication.
+      'Cross-Origin-Opener-Policy': 'same-origin-allow-popups',
+    },
   },
 })
