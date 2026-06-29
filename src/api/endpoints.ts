@@ -12,8 +12,8 @@ import type {
 
 // Auth
 export const authGoogle = async (credential: string): Promise<AuthResponse> => {
-  const { data } = await api.post('/auth/google', { idToken: credential });
-  return data;
+  const { data } = await api.post<{ accessToken: string; user: AuthResponse['user'] }>('/auth/google', { idToken: credential });
+  return { token: data.accessToken, user: data.user };
 };
 
 export const getMe = async (): Promise<User> => {
