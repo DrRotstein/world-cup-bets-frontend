@@ -12,7 +12,7 @@ import type {
 
 // Auth
 export const authGoogle = async (credential: string): Promise<AuthResponse> => {
-  const { data } = await api.post('/auth/google', { credential });
+  const { data } = await api.post('/auth/google', { idToken: credential });
   return data;
 };
 
